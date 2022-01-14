@@ -28,24 +28,23 @@ SuperTokens.init({
     },
     recipeList: [
         EmailPassword.init({
-            // this disables showing the default sign in + sign up component
             signInAndUpFeature: {
-                disableDefaultImplementation: true,
+                disableDefaultImplementation: true, // this disables showing the default sign in + sign up component
+
                 signInForm: {
-                    // hides the element that shows switch UI to sign in / up below the title
                     style: {
                         headerSubtitle: {
-                            display: "none",
+                            display: "none", // hides the element that shows switch to the sign up form
                         },
                         divider: {
-                            display: "none",
+                            display: "none", // hides the divider in the sign in UI
                         },
                     },
                 },
                 signUpForm: {
                     style: {
                         headerSubtitle: {
-                            display: "none",
+                            display: "none", // hides the element that shows switch to the sign in form
                         },
                     },
                 },
@@ -60,6 +59,12 @@ SuperTokens.init({
             override: {
                 components: {
                     EmailPasswordSignIn: ({ DefaultComponent, ...props }) => {
+                        /* if the user visits the /signin route, we want to show the
+                         default implementation. If thy visit the /signup 
+                         route (which also renders the <SignInUp> component),
+                         we want to show the sign up UI, so we set the query parm to ?show=signup
+                         which shows the sign up UI.
+                        */
                         const [showUI, setShowUI] = useState(false);
                         useEffect(() => {
                             if (window.location.pathname === "/signin") {
@@ -77,6 +82,11 @@ SuperTokens.init({
                         }
                     },
                     EmailPasswordSignUp: ({ DefaultComponent, ...props }) => {
+                        /* if the user visits the /signup route, we want to show the
+                         default implementation. If thy visit the /signin?show=signup
+                         route, we want to show the sign in UI, so we redirect them to /signin
+                         which shows the sign in UI.
+                        */
                         const [showUI, setShowUI] = useState(false);
                         useEffect(() => {
                             if (window.location.pathname === "/signup") {
@@ -134,8 +144,15 @@ function App() {
                                 </EmailPassword.EmailPasswordAuth>
                             }
                         />
-                        <Route path="/signin/" element={<EmailPassword.SignInAndUp />} />
-                        <Route path="/signup/" element={<EmailPassword.SignInAndUp />} />
+                        {/* we want to render the sign in component in /signin.
+                        We will override the <SignInAndUp> component to only show the sign in
+                        UI on this route. See the init function call above for how to do this*/}
+                        <Route path="/signin" element={<EmailPassword.SignInAndUp />} />
+
+                        {/* we want to render the sign up component in /signup.
+                        We will override the <SignInAndUp> component to only show the sign up
+                        UI on this route. See the init function call above for how to do this*/}
+                        <Route path="/signup" element={<EmailPassword.SignInAndUp />} />
                     </Routes>
                 </div>
                 <Footer />

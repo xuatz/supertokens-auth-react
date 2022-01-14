@@ -1,14 +1,16 @@
 ![SuperTokens banner](https://raw.githubusercontent.com/supertokens/supertokens-logo/master/images/Artboard%20%E2%80%93%2027%402x.png)
 
-# SuperTokens EmailPassword Demo app
+# SuperTokens EmailPassword Demo app with split sign in and sign up UI
 
 This demo app demonstrates the following use cases:
 
--   Login
--   Sign up
+-   Login (on /signin)
+-   Sign up (on /signup)
 -   Logout
 -   Forgot password flow
 -   Session management & Calling APIs
+
+This also showcases how you can use the react component override feature and the CSS customization feature to change our default implementation to what you need.
 
 ## Project setup
 
