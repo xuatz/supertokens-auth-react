@@ -11,7 +11,7 @@ export default function Home() {
 
     async function logoutClicked() {
         await signOut();
-        navigate("/auth");
+        navigate("/signin");
     }
 
     return (

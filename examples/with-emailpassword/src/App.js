@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import SuperTokens, { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
@@ -28,8 +28,80 @@ SuperTokens.init({
     },
     recipeList: [
         EmailPassword.init({
-            emailVerificationFeature: {
-                mode: "REQUIRED",
+            // this disables showing the default sign in + sign up component
+            signInAndUpFeature: {
+                disableDefaultImplementation: true,
+                signInForm: {
+                    // hides the element that shows switch UI to sign in / up below the title
+                    style: {
+                        headerSubtitle: {
+                            display: "none",
+                        },
+                        divider: {
+                            display: "none",
+                        },
+                    },
+                },
+                signUpForm: {
+                    style: {
+                        headerSubtitle: {
+                            display: "none",
+                        },
+                    },
+                },
+            },
+            getRedirectionURL: function (context) {
+                if (context.action === "SIGN_IN_AND_UP") {
+                    // if the user is not logged in, we want to send
+                    // them to the sign in page.
+                    return "/signin";
+                }
+            },
+            override: {
+                components: {
+                    EmailPasswordSignIn: ({ DefaultComponent, ...props }) => {
+                        const [showUI, setShowUI] = useState(false);
+                        useEffect(() => {
+                            if (window.location.pathname === "/signin") {
+                                setShowUI(true);
+                            } else if (window.location.pathname === "/signup") {
+                                window.location.href = "/signup?show=signup";
+                            } else {
+                                setShowUI(true);
+                            }
+                        }, []);
+                        if (showUI) {
+                            return <DefaultComponent {...props} />;
+                        } else {
+                            return null;
+                        }
+                    },
+                    EmailPasswordSignUp: ({ DefaultComponent, ...props }) => {
+                        const [showUI, setShowUI] = useState(false);
+                        useEffect(() => {
+                            if (window.location.pathname === "/signup") {
+                                setShowUI(true);
+                            } else if (window.location.pathname === "/signin") {
+                                window.location.href = "/signin";
+                            } else {
+                                setShowUI(true);
+                            }
+                        }, []);
+                        if (showUI) {
+                            return <DefaultComponent {...props} />;
+                        } else {
+                            return null;
+                        }
+                    },
+                    EmailPasswordSignInHeader: ({ DefaultComponent, ...props }) => {
+                        return (
+                            <div>
+                                <DefaultComponent {...props} />
+                                Click <a href="/signup?show=signup">here</a> to sign up
+                            </div>
+                        );
+                    },
+                },
             },
         }),
         Session.init(),
@@ -62,6 +134,8 @@ function App() {
                                 </EmailPassword.EmailPasswordAuth>
                             }
                         />
+                        <Route path="/signin/" element={<EmailPassword.SignInAndUp />} />
+                        <Route path="/signup/" element={<EmailPassword.SignInAndUp />} />
                     </Routes>
                 </div>
                 <Footer />
