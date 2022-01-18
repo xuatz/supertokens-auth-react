@@ -8,6 +8,7 @@ let Session = require("supertokens-node/recipe/session");
 let { verifySession } = require("supertokens-node/recipe/session/framework/express");
 let { middleware, errorHandler } = require("supertokens-node/framework/express");
 let ThirdParty = require("supertokens-node/recipe/thirdparty");
+let Passwordless = require("supertokens-node/recipe/passwordless");
 
 const apiPort = process.env.REACT_APP_API_PORT || 3001;
 const apiDomain = process.env.REACT_APP_API_URL || `http://localhost:${apiPort}`;
@@ -38,6 +39,14 @@ supertokens.init({
                         domain: "supertokens.io",
                     }),
                 ],
+            },
+        }),
+        Passwordless.init({
+            contactMethod: "PHONE",
+            flowType: "USER_INPUT_CODE",
+            createAndSendCustomTextMessage: async function (input) {
+                // TODO: send SMS here
+                console.log(input);
             },
         }),
         Session.init(),
