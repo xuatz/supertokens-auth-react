@@ -1,12 +1,14 @@
 ![SuperTokens banner](https://raw.githubusercontent.com/supertokens/supertokens-logo/master/images/Artboard%20%E2%80%93%2027%402x.png)
 
-# SuperTokens ThirdParty Demo app
+# SuperTokens ThirdParty + Passwordless 2fa demo
 
-This demo app demonstrates the following use cases:
+This demo app demonstrates how we can implement sign in with google workspaces and then add SMS OTP based 2FA on top of that.
 
--   Social Login / Sign up
--   Logout
--   Session management & Calling APIs
+## Changes
+
+-   On the frontend, we add a custom provider for sign in with google workspaces
+-   We initialise Passwordless recipe on the frontend and backend as per its quick setup
+-   To disable sign ups via google workspaces login, we override the `signInUpPOST` API call as shown in `api-server/customSignInUpPOST.js` file.
 
 ## Project setup
 
@@ -43,6 +45,11 @@ If you would like to modify the website (http://localhost:3000) or the API serve
 ```bash
 npm run build && npm run start
 ```
+
+## Current drawbacks:
+
+-   Lack of context passing in backend API forces copying of backend logic
+-   It's confusing that we use `ThirdPartyAuth` wrapper and not `PasswordlessAuth` wrapper. It should be possible to just use `SessionAuth` only.
 
 ## Author
 

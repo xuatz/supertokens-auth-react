@@ -9,6 +9,7 @@ let { verifySession } = require("supertokens-node/recipe/session/framework/expre
 let { middleware, errorHandler } = require("supertokens-node/framework/express");
 let ThirdParty = require("supertokens-node/recipe/thirdparty");
 let Passwordless = require("supertokens-node/recipe/passwordless");
+let signInUpPOST = require("./customSIgnInUpPOST").signInUpPOST;
 
 const apiPort = process.env.REACT_APP_API_PORT || 3001;
 const apiDomain = process.env.REACT_APP_API_URL || `http://localhost:${apiPort}`;
@@ -39,6 +40,14 @@ supertokens.init({
                         domain: "supertokens.io",
                     }),
                 ],
+            },
+            override: {
+                apis: (oI) => {
+                    return {
+                        ...oI,
+                        signInUpPOST,
+                    };
+                },
             },
         }),
         Passwordless.init({
