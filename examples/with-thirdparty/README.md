@@ -30,15 +30,15 @@ The app will start on `http://localhost:3000`
 
 If you would like to modify the website (http://localhost:3000) or the API server (http://localhost:3001) URL:
 
--   Change the `apiPort` or `apiDomain` values in `api-server.js`
+-   Change the `apiPort` or `apiDomain` values in `api-server/index.js`
 -   Change the `apiPort` or `apiUrl` values in `src/App.js`
--   Change the `websitePort` or `websiteDomain` values in `api-server.js`
+-   Change the `websitePort` or `websiteDomain` values in `api-server/index.js`
 -   Change the `websitePort` or `websiteUrl` values in `src/App.js`
 
 ## Project structure & Parameters
 
 -   The frontend code is located in the `src` folder.
--   The backend API is in the `api-server.js` file.
+-   The backend API is in the `api-server/index.js` file.
 
 ## Production build
 
@@ -50,6 +50,7 @@ npm run build && npm run start
 
 -   Lack of context passing in backend API forces copying of backend logic
 -   It's confusing that we use `ThirdPartyAuth` wrapper and not `PasswordlessAuth` wrapper. It should be possible to just use `SessionAuth` only.
+-   Sending SMS is something that you need to implement yourself entirely
 
 ## Author
 
